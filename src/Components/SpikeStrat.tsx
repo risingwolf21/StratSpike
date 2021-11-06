@@ -8,48 +8,48 @@ import { useReactMediaRecorder } from 'react-media-recorder';
 
 const SpikeStrat = () => {
     const [size, setSize] = useState(50);
-    const [isRecording, setIsRecording] = useState(false);
-    const {
-        status,
-        startRecording,
-        stopRecording,
-        mediaBlobUrl,
-      } = useReactMediaRecorder({ screen: true, audio: true });
+    // const [isRecording, setIsRecording] = useState(false);
+    // const {
+    //     status,
+    //     startRecording,
+    //     stopRecording,
+    //     mediaBlobUrl,
+    //   } = useReactMediaRecorder({ screen: true, audio: true });
 
-    const viewRecording = () => {
-        window!.open(mediaBlobUrl || undefined, "_blank")!.focus();
-    };
+    // const viewRecording = () => {
+    //     window!.open(mediaBlobUrl || undefined, "_blank")!.focus();
+    // };
 
-    const downloadRecording = () => {
-        if (mediaBlobUrl) {
-            const link = document.createElement("a");
+    // const downloadRecording = () => {
+    //     if (mediaBlobUrl) {
+    //         const link = document.createElement("a");
 
-            // Set link's href to point to the Blob URL
-            link.href = mediaBlobUrl;
-            link.download = "startSpike.mp4";
+    //         // Set link's href to point to the Blob URL
+    //         link.href = mediaBlobUrl;
+    //         link.download = "startSpike.mp4";
         
-            // Append link to the body
-            document.body.appendChild(link);
+    //         // Append link to the body
+    //         document.body.appendChild(link);
         
-            // Dispatch click event on the link
-            // This is necessary as link.click() does not work on the latest firefox
-            link.dispatchEvent(
-                new MouseEvent('click', { 
-                    bubbles: true, 
-                    cancelable: true, 
-                    view: window 
-                })
-            );
+    //         // Dispatch click event on the link
+    //         // This is necessary as link.click() does not work on the latest firefox
+    //         link.dispatchEvent(
+    //             new MouseEvent('click', { 
+    //                 bubbles: true, 
+    //                 cancelable: true, 
+    //                 view: window 
+    //             })
+    //         );
         
-            // Remove link from body
-            document.body.removeChild(link);
-        }
-      };
+    //         // Remove link from body
+    //         document.body.removeChild(link);
+    //     }
+    //   };
 
     return (
         <>
             <div className="buttonContainer">
-                <div>
+                {/* <div>
                     <button className="sizeButton" onClick={() => {
                         if (status && status === "recording") {
                             stopRecording();
@@ -77,7 +77,7 @@ const SpikeStrat = () => {
                             Download
                         </button>
                     )}
-                </div>
+                </div> */}
                 <div>
                     <button className="sizeButton" onClick={() => setSize(size - 10)}>
                         -
