@@ -1,7 +1,7 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
-import SpikeStrat from './SpikeStrat';
+import SpikeStrat from './Components/SpikeStrat';
 
 function App() {
   return (
