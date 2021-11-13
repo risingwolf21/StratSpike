@@ -11,6 +11,16 @@
   background-size: cover;
 }
 
+.nhz {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  border-width: 3px;
+  border: 1px solid white;
+}
+
 .jersey {
   width: 10%;
 }
