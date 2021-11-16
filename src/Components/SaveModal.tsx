@@ -1,6 +1,6 @@
 import './spike.css';
 
-import React, { useCallback, useEffect, useState } from 'react';
+import { useState } from 'react';
 import { addDoc, collection, getFirestore } from "firebase/firestore";
 import ReactModal from 'react-modal';
 import { useAlert } from 'react-alert';
@@ -37,7 +37,8 @@ const SaveModal = (props: any) => {
                 animationName: animationName,
                 creatorUsername: creatorUserName,
                 upvote: 0,
-                data: props.animation
+                data: props.animation,
+                size: props.size
             });
             setAnimationLink(`${process.env.REACT_APP_URL}/${docRef.id}`)
             alert.success("Your animation has been saved")
@@ -89,7 +90,7 @@ const SaveModal = (props: any) => {
                     ) : (
                         <>
                             <div className="modalInfoText">
-                                You can copy your animation link via the copy button below. <br/><br/> You can also open you animation now : <a href={animationLink} target="_blank">{animationLink}</a>
+                                You can copy your animation link via the copy button below. <br/><br/> You can also open you animation now : <a href={animationLink} target="_blank" rel="noreferrer">{animationLink}</a>
                             </div>
                             <div className="modalInfoText">
                                 {isPrivate ? (

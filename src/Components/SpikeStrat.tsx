@@ -1,7 +1,6 @@
 import './spike.css';
 
 import React, { useCallback, useEffect, useState } from 'react';
-import { addDoc, collection, getFirestore } from "firebase/firestore";
 
 import Draggable from 'react-draggable';
 import spikeball from '../Assets/spikeball.png'
@@ -180,7 +179,7 @@ const SpikeStrat = (props: any) => {
                 Spike<span style={{color: 'yellow'}}>Strat</span>
             </button>
             <div className="buttonContainer">
-                {!isRecording && !isViewing && (
+                {!isRecording && !isViewing && animation.length === 0 && (
                     <div>
                         <button style={{fontSize: 17 * size}} className="sizeButton" onClick={() => {
                             if (size > 0.8) {
@@ -246,6 +245,7 @@ const SpikeStrat = (props: any) => {
             {!isViewing && !isRecording && (
                 <button style={{fontSize: 17 * size, position: 'absolute', right: 5, top: 5}} className="sizeButton" onClick={() => {
                     setAnimation([]);
+                    setStep(0);
                     resetShirt();
                 }}
                 >
@@ -274,6 +274,7 @@ const SpikeStrat = (props: any) => {
                     closeModal={() => {
                         setIsSaving(false)
                     }}
+                    size={size}
                 />
             )}
         </>

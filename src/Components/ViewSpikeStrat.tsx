@@ -1,13 +1,11 @@
 import './spike.css';
 
 import React, { useCallback, useEffect, useState } from 'react';
-import { addDoc, collection, doc, getDoc, getFirestore } from "firebase/firestore";
+import { doc, getDoc, getFirestore } from "firebase/firestore";
 
-import Draggable from 'react-draggable';
 import spikeball from '../Assets/spikeball.png'
 import tshirt from '../Assets/tshirt.png'
 import tshirt2 from '../Assets/tshirt1.png'
-import SaveModal from './SaveModal';
 
 const getSize = () => {
     const width = window.innerWidth
@@ -56,6 +54,7 @@ const getSize = () => {
 
 const ViewSpikeStrat = (props: any) => {
     const [size, setSize] = useState(getSize());
+    const [animationSize, setAnimationSize] = useState(1.2);
     const [isViewing, setIsViewing] = useState<boolean>(false);
     const [animation, setAnimation] = useState<any[]>([]);
     const forceUpdate = React.useReducer(() => ({}), {})[1] as () => void
@@ -102,12 +101,12 @@ const ViewSpikeStrat = (props: any) => {
     }, [updatePosition])
 
     const getAnimation = async () => {
-        console.log(props.id)
         const docRef = doc(db, "animations", props.id);
         const docSnap = await getDoc(docRef);
         
         if (docSnap.exists()) {
             setAnimation(docSnap.data().data)
+            setAnimationSize(docSnap.data().size)
             console.log("Document data:", docSnap.data());
         } else {
           // doc.data() will be undefined in this case
@@ -141,16 +140,27 @@ const ViewSpikeStrat = (props: any) => {
         setIsViewing(true)
         resetShirt();
         requestAnimationFrame(function animate(timestamp) {
-    
+                
             const style = document.getElementById(animation[i].id)?.style;
             if (style) {
-                style.transform = animation[i].data[i2]
+                const x = animation[i].data[i2].substring(
+                    animation[i].data[i2].indexOf("(") + 1, 
+                    animation[i].data[i2].lastIndexOf("px,")
+                )
+                const y = animation[i].data[i2].substring(
+                    animation[i].data[i2].indexOf(" ") + 1, 
+                    animation[i].data[i2].lastIndexOf("px)")
+                )
+                const xSize = parseInt(x) * (size / animationSize)
+                const ySize = parseInt(y) * (size / animationSize)
+                const transform = `translate(${xSize.toString()}px, ${ySize.toString()}px)`
+                style.transform = transform
             }
             
-            if (i2 < animation[i].data.length) {
+            if (i2 < animation[i].data.length - 1) {
                 i2++;
                 requestAnimationFrame(animate);
-            } else if (i + 1 < animation.length) {
+            } else if (i + 1 < animation.length - 1) {
                 i++;
                 i2 = 0;
                 requestAnimationFrame(animate);
@@ -165,7 +175,7 @@ const ViewSpikeStrat = (props: any) => {
         <>
             <button 
                 className="homeButton" 
-                style={{fontSize: 20 * getSize()}}
+                style={{fontSize: 20 * size}}
                 onClick={() => {
                     window.location.href = process.env.REACT_APP_URL || "https://stratspike.herokuapp.com"
                 }}

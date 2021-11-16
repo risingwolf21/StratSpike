@@ -1,7 +1,6 @@
 import './spike.css';
 
 import { useEffect, useState } from 'react';
-import SpikeStrat from './SpikeStrat';
 import { collection, getFirestore, onSnapshot, query, where } from '@firebase/firestore';
 
 const getSize = () => {
@@ -49,11 +48,10 @@ const getSize = () => {
 }
 
 const CommunityAnimations = (props: any) => {
-    const [isCreateAnimationClicked, setIsCreateAnimationClicked] = useState<boolean>(false);
     const [animations, setAnimations] = useState<any[]>([]);
-    const db = getFirestore(props.app);
 
     useEffect(() => {
+        const db = getFirestore(props.app);
         const q = query(collection(db, "animations"), where("private", "==", false));
         const unsubscribe = onSnapshot(q, (querySnapshot) => {
             console.log(querySnapshot)
@@ -67,7 +65,7 @@ const CommunityAnimations = (props: any) => {
             setAnimations(anims)
         });
         return unsubscribe
-    }, [])
+    }, [props.app])
 
     return (
         <>
