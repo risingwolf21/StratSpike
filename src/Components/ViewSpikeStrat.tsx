@@ -1,7 +1,7 @@
 import './spike.css';
 
 import React, { useCallback, useEffect, useState } from 'react';
-import { addDoc, collection, getFirestore } from "firebase/firestore";
+import { addDoc, collection, doc, getDoc, getFirestore } from "firebase/firestore";
 
 import Draggable from 'react-draggable';
 import spikeball from '../Assets/spikeball.png'
@@ -54,14 +54,12 @@ const getSize = () => {
 
 }
 
-const SpikeStrat = (props: any) => {
+const ViewSpikeStrat = (props: any) => {
     const [size, setSize] = useState(getSize());
-    const [isRecording, setIsRecording] = useState<boolean>(false);
     const [isViewing, setIsViewing] = useState<boolean>(false);
-    const [isSaving, setIsSaving] = useState<boolean>(false);
-    const [step, setStep] = useState<number>(0);
     const [animation, setAnimation] = useState<any[]>([]);
     const forceUpdate = React.useReducer(() => ({}), {})[1] as () => void
+    const db = getFirestore(props.app);
 
     const updatePosition = useCallback(() => {
         const roundnet = document.getElementById("roundnet");
@@ -103,28 +101,23 @@ const SpikeStrat = (props: any) => {
         updatePosition()
     }, [updatePosition])
 
-    const handleDrag = (id: string) => {
-        if (isRecording) {
-            const transform = document.getElementById(id)?.style.transform;
-
-            if (animation.length === step) {
-                setAnimation([...animation, {
-                    id,
-                    data: [
-                        transform
-                    ]
-                }])
-            } else {
-                animation[step].data.push(transform)
-            }
+    const getAnimation = async () => {
+        console.log(props.id)
+        const docRef = doc(db, "animations", props.id);
+        const docSnap = await getDoc(docRef);
+        
+        if (docSnap.exists()) {
+            setAnimation(docSnap.data().data)
+            console.log("Document data:", docSnap.data());
+        } else {
+          // doc.data() will be undefined in this case
+          console.log("No such document!");
         }
     }
 
-    const handleStop = () => {
-        if (isRecording) {
-            setStep(step + 1);
-        }
-    }
+    useEffect(() => {
+        getAnimation()
+    }, [])
 
     const resetShirt = () => {
         const shirt1 = document.getElementById("shirt1")?.style;
@@ -145,7 +138,7 @@ const SpikeStrat = (props: any) => {
         let i = 0;
         let i2 = 0;
 
-        setIsViewing(true);
+        setIsViewing(true)
         resetShirt();
         requestAnimationFrame(function animate(timestamp) {
     
@@ -165,14 +158,14 @@ const SpikeStrat = (props: any) => {
                 return;
             }
         });
-        setIsViewing(false)
+        setIsViewing(false);
     }
 
     return (
         <>
             <button 
                 className="homeButton" 
-                style={{fontSize: 20 * size}}
+                style={{fontSize: 20 * getSize()}}
                 onClick={() => {
                     window.location.href = process.env.REACT_APP_URL || "https://stratspike.herokuapp.com"
                 }}
@@ -180,7 +173,7 @@ const SpikeStrat = (props: any) => {
                 Spike<span style={{color: 'yellow'}}>Strat</span>
             </button>
             <div className="buttonContainer">
-                {!isRecording && !isViewing && (
+                {!isViewing && (
                     <div>
                         <button style={{fontSize: 17 * size}} className="sizeButton" onClick={() => {
                             if (size > 0.8) {
@@ -204,80 +197,25 @@ const SpikeStrat = (props: any) => {
             <div id="roundnet" style={{width: 70 * size, height: 70 * size}} className="roundnet"/>
             <div style={{width: 90 * size, height: 90 * size}} className="nhz"/>
             <div style={{width: 190 * size, height: 190 * size}} className="nhz"/>
-            <Draggable
-                onDrag={() => handleDrag("shirt1")}
-                onStop={handleStop}
-            >
-                <img id="shirt1" src={tshirt} style={{width: 50 * size, position: "absolute"}} draggable="false" alt="team1-tshirt"/>
-            </Draggable>
-            <Draggable
-                onDrag={() => handleDrag("shirt2")}
-                onStop={handleStop}
-            >
-                    <img id="shirt2" src={tshirt} style={{width: 50 * size, position: "absolute"}} draggable="false" alt="team1-tshirt"/>
-            </Draggable>
-            <Draggable
-                onDrag={() => handleDrag("shirt3")}
-                onStop={handleStop}
-            >
-                    <img id="shirt3" src={tshirt2} style={{width: 50 * size, position: "absolute"}} draggable="false" alt="team2-tshirt"/>
-            </Draggable>
-            <Draggable
-                onDrag={() => handleDrag("shirt4")}
-                onStop={handleStop}
-            >
-                    <img id="shirt4" src={tshirt2} style={{width: 50 * size, position: "absolute"}} draggable="false" alt="team2-tshirt"/>
-            </Draggable>
-            <Draggable
-                onDrag={() => handleDrag("ball")}
-                onStop={handleStop}
-            >
-                    <img id="ball" src={spikeball} style={{width: 15 * size, position: "absolute"}} draggable="false" alt="spikeball-ball"/>
-            </Draggable>
-            <button style={{fontSize: 17 * size, position: 'absolute', left: 5, bottom: 5}} className="sizeButton" onClick={() => {
-                       if (isRecording) {
-                        setIsRecording(false)
-                       } else {
-                           setIsRecording(true)
-                       }
-                    }}>
-                        {isRecording ? "Stop Recording" : "Record"}
-            </button>
-            {!isViewing && !isRecording && (
-                <button style={{fontSize: 17 * size, position: 'absolute', right: 5, top: 5}} className="sizeButton" onClick={() => {
-                    setAnimation([]);
-                    resetShirt();
-                }}
-                >
-                            Reset
-                </button>
-            )}
-            <div className="animationButtonsContainer">
-                {!isRecording && animation.length > 0 && (
-                    <button style={{fontSize: 17 * size}} className="sizeButton" onClick={viewAnimation}
-                    >
-                                View
-                    </button>
-                )}
 
-                {!isRecording && animation.length > 0 && (
-                    <button style={{fontSize: 17 * size, marginLeft: 3}} className="sizeButton" onClick={() => setIsSaving(true)}
-                    >
-                                Save
-                    </button>
-                )}
-            </div>
-            {isSaving && (
-                <SaveModal 
-                    animation={animation}
-                    app={props.app}
-                    closeModal={() => {
-                        setIsSaving(false)
-                    }}
-                />
-            )}
+            <img id="shirt1" src={tshirt} style={{width: 50 * size, position: "absolute"}} draggable="false" alt="team1-tshirt"/>
+
+            <img id="shirt2" src={tshirt} style={{width: 50 * size, position: "absolute"}} draggable="false" alt="team1-tshirt"/>
+
+            <img id="shirt3" src={tshirt2} style={{width: 50 * size, position: "absolute"}} draggable="false" alt="team2-tshirt"/>
+
+            <img id="shirt4" src={tshirt2} style={{width: 50 * size, position: "absolute"}} draggable="false" alt="team2-tshirt"/>
+
+            <img id="ball" src={spikeball} style={{width: 15 * size, position: "absolute"}} draggable="false" alt="spikeball-ball"/>
+            <button style={{fontSize: 17 * size, position: 'absolute', left: 5, bottom: 5}} className="sizeButton" onClick={viewAnimation}>
+                Start Animation
+            </button>
+            <button style={{fontSize: 17 * size, position: 'absolute', right: 5, bottom: 5}} className="sizeButton" onClick={resetShirt}
+            >
+                Reset
+            </button>
         </>
     )
 }
 
-export default SpikeStrat;
+export default ViewSpikeStrat;

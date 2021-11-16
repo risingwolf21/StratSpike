@@ -37,6 +37,7 @@
   border: 1px solid white;
   border-radius: 5px;
   padding: 3px 10px;
+  cursor: pointer;
 }
 
 .sizeButtonContainer {
@@ -55,21 +56,95 @@
   justify-content: space-between;
 }
 
-
-/* .position2 {
+.animationButtonsContainer {
   position: absolute;
-  top: 250px;
-  left: 10px;
+  right: 5px;
+  bottom: 5px;
 }
 
-.position3 {
-  position: absolute;
-  top: 250px;
-  right: 10px;
+.modalTitle {
+  text-align: center;
+  color: green;
 }
 
-.position4 {
+.nameInput {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  height: 30%;
+  margin-top: 6%;
+}
+
+.textInput {
+  width: 90%;
+  margin-top: 5%;
+  margin-bottom: 5%;
+  padding: 5px 2px;
+  border: none;
+  border-bottom: 1px solid green;
+  outline: none;
+}
+
+.textInput::placeholder {
+  padding-left: 0;
+  color: gray;
+  font-size: 15px;
+}
+
+.modalButton {
+  font-size: 22px;
+  color: green;
+  background-color: transparent;
+  border: 1px solid green;
+  border-radius: 5px;
+  padding: 3px 10px;
+  cursor: pointer;
+}
+
+.modalContainer {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.modalInfoText {
+  margin-top: 5%;
+  color: gray
+}
+
+.homeButton {
+  background-color: transparent;
   position: absolute;
-  bottom: 120px;
-  left: 125px;
-} */
+  left: 50%;
+  transform: translate(-50%, 0%);
+  top: 5px;
+  border: none;
+  cursor: pointer;
+}
+
+.homeButtonsContainer {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.homeButtons {
+  width: 80%;
+  color: white;
+  background-color: transparent;
+  border: 1px solid white;
+  border-radius: 5px;
+  padding: 20px 30px;
+  cursor: pointer;
+}
+
+.communityButtonsContainer {
+  margin-top: 25%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
