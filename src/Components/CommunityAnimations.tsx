@@ -68,7 +68,7 @@ const CommunityAnimations = (props: any) => {
     }, [props.app])
 
     return (
-        <>
+        <div style={{overflowY: 'scroll', height: '100vh'}}>
             <button 
                 className="homeButton" 
                 style={{fontSize: 20 * getSize()}}
@@ -81,7 +81,7 @@ const CommunityAnimations = (props: any) => {
             <div className="communityButtonsContainer">
                 {animations.map((animation: any) => {
                     return (
-                        <button key={animation.id} style={{fontSize: 20 * getSize(), marginBottom: "5%"}} className="homeButtons" onClick={() => {
+                        <button key={animation.id} style={{fontSize: 15 * getSize(), marginBottom: "2%"}} className="homeButtons" onClick={() => {
                             window.location.href = `${process.env.REACT_APP_URL}/${animation.id}`
                         }}>
                             {animation.data.animationName} by {animation.data.creatorUsername}
@@ -89,7 +89,7 @@ const CommunityAnimations = (props: any) => {
                     )
                 })}
             </div>
-        </>
+        </div>
     )
 }
 

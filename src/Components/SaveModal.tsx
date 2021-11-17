@@ -75,7 +75,7 @@ const SaveModal = (props: any) => {
                                     </label>
                                     <label>
                                     <div style={{textAlign: 'left'}}>Animation Name</div>
-                                        <input className="textInput" type="text" name="username" placeholder="animation name" onChange={(e: any) => setAnimationName(e.target.value)}/>
+                                        <textarea maxLength={300} className="textInput" name="username" placeholder="animation name (max 300 characters)" onChange={(e: any) => setAnimationName(e.target.value)}/>
                                     </label>
                                 </div>
                             )}
