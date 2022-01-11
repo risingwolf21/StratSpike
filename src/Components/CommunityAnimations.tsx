@@ -68,7 +68,7 @@ const CommunityAnimations = (props: any) => {
     }, [props.app])
 
     return (
-        <div style={{overflowY: 'scroll', height: '100vh'}}>
+        <div style={{overflowY: 'scroll', height: '100%'}}>
             <button 
                 className="homeButton" 
                 style={{fontSize: 20 * getSize()}}
