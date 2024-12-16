@@ -1,9 +1,6 @@
 import "./spike.css";
 
 import { useState } from "react";
-import SpikeStrat from "./SpikeStrat";
-import CommunityAnimations from "./CommunityAnimations";
-import LoginModal from "./LoginModal";
 
 const getSize = () => {
   const width = window.innerWidth;
@@ -100,16 +97,6 @@ const Home = (props: any) => {
           </div>
         </>
       )}
-      {isLogin && (
-        <LoginModal
-          app={props.app}
-          closeModal={() => {
-            setIsLogin(false);
-          }}
-        />
-      )}
-      {isCreateAnimationClicked && <SpikeStrat app={props.app} />}
-      {isAnimationsClicked && <CommunityAnimations app={props.app} />}
     </>
   );
 };
